@@ -2,12 +2,12 @@
 	<TabGroup>
 		<Tab title="album">
 			<Window class="container">
-        		<Label id="label" onClick="doClick">Fuck Motoi!</Label>
+        		<Label id="label" onClick="doClick">Nice guy Motoi!</Label>
         	</Window>
         </Tab>
         <Tab title="camera">
 			<Window class="container">
-        		<Label id="label" onClick="doClick2">Suck Motoi!</Label>
+        		<Label id="label" onClick="doClick2">Cool Motoi!</Label>
         	</Window>
         </Tab>
 	</TabGroup>
