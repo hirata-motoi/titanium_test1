@@ -13,6 +13,23 @@ function doClick() {
     });
 }
 
+function doClick2() {
+	Titanium.Media.showCamera({
+		success:function(event){
+
+		},
+		cancel:function(){
+		
+		},
+		error:function(error){
+			
+		},
+		saveToPhotoGallery:true,
+		allowEditing:true,
+		mediaTypes:[Ti.Media.MEDIA_TYPE_VIDEO,Ti.Media.MEDIA_TYPE_PHOTO],
+	});
+}
+
 //for ( var i=0; i<5; i++ ) {
 //    var bgcolor = ( i % 2 ) ? true : false;
 //    var row = Alloy.createController("row", {
