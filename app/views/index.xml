@@ -1,0 +1,6 @@
+<Alloy>
+	<Window class="container">
+        <!--        <TableView id="tableView" /> -->
+        <Label id="label" onClick="doClick">Hello, Motoi</Label>
+	</Window>
+</Alloy>
