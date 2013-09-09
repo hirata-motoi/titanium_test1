@@ -1,6 +1,14 @@
 <Alloy>
-	<Window class="container">
-        <!--        <TableView id="tableView" /> -->
-        <Label id="label" onClick="doClick">Hello, Motoi</Label>
-	</Window>
+	<TabGroup>
+		<Tab title="album">
+			<Window class="container">
+        		<Label id="label" onClick="doClick">Fuck Motoi!</Label>
+        	</Window>
+        </Tab>
+        <Tab title="camera">
+			<Window class="container">
+        		<Label id="label" onClick="doClick2">Suck Motoi!</Label>
+        	</Window>
+        </Tab>
+	</TabGroup>
 </Alloy>
