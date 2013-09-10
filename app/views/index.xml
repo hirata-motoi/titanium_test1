@@ -2,12 +2,17 @@
 	<TabGroup>
 		<Tab title="album">
 			<Window class="container">
-        		<Label id="label" onClick="doClick">Nice guy Motoi!</Label>
+        		<Label id="label" onClick="doClick3">Nice guy Motoi!</Label>
         	</Window>
         </Tab>
         <Tab title="camera">
 			<Window class="container">
         		<Label id="label" onClick="doClick2">Cool Motoi!</Label>
+        	</Window>
+        </Tab>
+        <Tab title="photo">
+			<Window class="container">
+        		<Label id="label" onClick="doClick4">show photo</Label>
         	</Window>
         </Tab>
 	</TabGroup>
