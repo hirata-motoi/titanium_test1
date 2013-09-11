@@ -1,9 +1,3 @@
-function file_path() {
-    var f = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + 'name.png');
-    return f;
-}
-
-
 function doClick() {
     alert("image clicked");
     Titanium.Media.openPhotoGallery({
@@ -36,7 +30,17 @@ function doClick2() {
 	});
 }
 function doClick3() {
-    var file = file_path();
+    var file = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + 'name.png');
+    var ca = Ti.UI.createAlertDialog({
+           title: 'photo save',
+           message: file,
+           buttonNames: ['OK!', 'Cancel'],
+           cancel: 1
+    }); 
+    ca.addEventListener('click', function(e){
+        Ti.API.info(e.index);
+    });
+    ca.show();
     Titanium.Media.openPhotoGallery({
         success: function(event) {
             var check_alert = Ti.UI.createAlertDialog({
@@ -60,14 +64,24 @@ function doClick3() {
         },
         cancel: function() {
         },
-        saveToPhotoGallery:true,
+        saveToPhotoGallery:false,
         allowEditing: true,
         mediaTypes:[Ti.Media.MEDIA_TYPE_PHOTO]
     });
 }
 
 function doClick4() {
-    var file = file_path();
+    var file = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + 'name.png');
+    var ca = Ti.UI.createAlertDialog({
+           title: 'photo save',
+           message: file,
+           buttonNames: ['OK!', 'Cancel'],
+           cancel: 1
+    }); 
+    ca.addEventListener('click', function(e){
+        Ti.API.info(e.index);
+    });
+    ca.show();
     var check_alert = Ti.UI.createAlertDialog({
            title: 'photo show',
            message: file,
@@ -78,10 +92,20 @@ function doClick4() {
         Ti.API.info(e.index);
     });
     check_alert.show();
+
+
+
     var win = Ti.UI.createWindow({
         backgroundColor: 'black'
     });
+    var cancel_btn = Titanium.UI.createButton({title: 'close', height: 40, width: 100});
+    cancel_btn.addEventListener('click', function() {
+        win.close();
+    });
+    win.rightNavButton = cancel_btn;
+
     var view = Ti.UI.createView();
+
     var image = Ti.UI.createImageView({
         image: file,
         width: 200,
@@ -89,7 +113,11 @@ function doClick4() {
 
     view.add(image);
     win.add(view);
-    win.open();
+    win.open({
+        modal:true,
+        modalTransitionStyle: Titanium.UI.iPhone.MODAL_TRANSITION_STYLEFLIP_HORIZONTAL,
+        modalStyle: Titanium.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
+    });
 }
 
 
