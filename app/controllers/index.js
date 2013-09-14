@@ -30,7 +30,29 @@ function doClick2() {
 	});
 }
 function doClick3() {
-    var file = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + 'name.png');
+    var id;
+
+    var seq_image_r = Alloy.createCollection('seq_image');
+    seq_image_r.fetch();
+
+    var seq_image_w
+    if ( seq_image_r.length < 1 ) {
+        seq_image_w = Alloy.createModel('seq_image', {"id" : 0});
+        seq_image_w.save();
+        seq_image_r = Alloy.createCollection('seq_image');
+        seq_image_r.fetch();
+    }
+
+    seq_image_r.map(function(row) {
+        id = row.get('id') + 1;
+        row.set({'id':id});
+        row.save();
+    });
+
+
+
+    var file = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + id + '.png');
+
     var ca = Ti.UI.createAlertDialog({
            title: 'photo save',
            message: file,
@@ -71,9 +93,16 @@ function doClick3() {
 }
 
 function doClick4() {
-    var file = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + 'name.png');
+    var id;
+    var rows = Alloy.createCollection('seq_image');
+    rows.fetch();
+    rows.map(function(row) {
+        id = row.get('id');
+    });
+
+    var file = Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + id + '.png');
     var ca = Ti.UI.createAlertDialog({
-           title: 'photo save',
+           title: 'photo read',
            message: file,
            buttonNames: ['OK!', 'Cancel'],
            cancel: 1
