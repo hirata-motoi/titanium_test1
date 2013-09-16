@@ -2,12 +2,14 @@ exports.definition = {
 	config: {
 		columns: {
 		    "id": "integer",
-		    "name": "text",
-		    "created_at": "integer"
+		    "tag": "text",
+		    "disabled": "integer",
+		    "created_at": "integer",
+		    "updated_at": "integer"
 		},
 		adapter: {
 			type: "sql",
-			collection_name: "image"
+			collection_name: "image_tag"
 		}
 	},
 	extendModel: function(Model) {

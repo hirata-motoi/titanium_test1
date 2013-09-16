@@ -1,9 +1,17 @@
 <Alloy>
 	<TabGroup>
+        <Tab title="tag list">
+			<Window class="container" id="tag_list">
+        	</Window>
+        </Tab>
 		<Tab title="album">
 			<Window class="container">
-        		<Label id="label" onClick="doClick3">Nice guy Motoi!</Label>
+        		<Label id="label" onClick="doClick3">access photo album</Label>
         	</Window>
+        </Tab>
+        <Tab title="image list">
+			<Window class="container" id="image_list">
+            </Window>
         </Tab>
         <Tab title="camera">
 			<Window class="container">
