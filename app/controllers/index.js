@@ -1,3 +1,5 @@
+"use strict;";
+
 function save_tag_info(id, tag) {
     Ti.API.info("id:" + id + "  tag:" + tag);
     var tag_w = Alloy.createModel('image_tag', {
@@ -10,7 +12,6 @@ function save_tag_info(id, tag) {
     tag_w.save();
     alert('save tag info succeeded id:' + id + "  tag:" + tag);
 }
-
 
 function doClick() {
     alert("image clicked");
@@ -50,7 +51,7 @@ function get_image_seq() {
     var seq_image_r = Alloy.createCollection('seq_image');
     seq_image_r.fetch();
 
-    var seq_image_w
+    var seq_image_w;
     if ( seq_image_r.length < 1 ) {
         seq_image_w = Alloy.createModel('seq_image', {"id" : 0});
         seq_image_w.save();
@@ -401,9 +402,6 @@ function create_image_list() {
         scrollView.add(image);
     }
 
-//    var win = Ti.UI.createWindow({
-//        backgroundColor: 'black'
-//    });
     var win = $.image_list;
     var cancel_btn = Titanium.UI.createButton({title: 'close', height: 40, width: 100});
     cancel_btn.addEventListener('click', function() {
@@ -411,21 +409,20 @@ function create_image_list() {
     });
     win.rightNavButton = cancel_btn;
     win.add(scrollView);
-//    win.open({
-//        modal:true,
-//        modalTransitionStyle: Titanium.UI.iPhone.MODAL_TRANSITION_STYLEFLIP_HORIZONTAL,
-//        modalStyle: Titanium.UI.iPhone.MODAL_PRESENTATION_FORMSHEET
-//    });
 }
 
 function get_tag_groups(tag) {
     var tag_r = Alloy.createCollection('image_tag');
 
     if (tag) {
-        tag_r.fetch({query: 'select * from image_tag where tag is not null and id is not null and disabled = 0 and tag = ' + '"' + tag + '"'});
+        tag_r.fetch({
+            query: 'select * from image_tag where tag is not null and id is not null and disabled = 0 and tag = ' + '"' + tag + '"'
+        });
     }
     else {
-        tag_r.fetch({query: 'select * from image_tag where tag is not null and id is not null and disabled = 0'});
+        tag_r.fetch({
+            query: 'select * from image_tag where tag is not null and id is not null and disabled = 0'
+        });
     }
 
     var tags = new Array();
@@ -463,9 +460,7 @@ function create_tag_list(tag) {
     //for ( var i = 0, max = image_ids.length; i < max; i++ ) {
     for (var t in tags) {
         var length = tags[t].length - 1;
-        Ti.API.info("length:" + length);
         var latest_id = tags[t][length];
-        Ti.API.info("latest_id:" + latest_id);
         var image = Titanium.UI.createImageView({
             image: Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + latest_id + '.png'),
             width: cellWidth,
@@ -492,7 +487,9 @@ function create_tag_list(tag) {
             for (var i = 0; i < tags[tag].length; i++) {
                 var id = tags[tag][i];
                 var image = Titanium.UI.createImageView({
-                    image: Ti.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory + "/" + id + '.png'),
+                    image: Ti.Filesystem.getFile(
+                        Titanium.Filesystem.applicationDataDirectory+"/"+id+'.png'
+                    ),
                     width: cellWidth,
                     height: cellHeight,
                     bubbleParent: false,
@@ -507,7 +504,11 @@ function create_tag_list(tag) {
             var win = Ti.UI.createWindow({
                 backgroundColor: 'black'
             });
-            var cancel_btn = Titanium.UI.createButton({title: 'close', height: 40, width: 100});
+            var cancel_btn = Titanium.UI.createButton({
+                title: 'close',
+                height: 40, 
+                width: 100
+            });
             cancel_btn.addEventListener('click', function() {
                 win.close();
             });
@@ -523,6 +524,115 @@ function create_tag_list(tag) {
     }
     tag_win.add(scrollView);
 }
+
+function create_flat_list() {
+    
+    var scrollView = Ti.UI.createScrollView({
+        contentWidth: Ti.Platform.displayCaps.platformWidth,
+        contentHeight: 'auto',
+        layout: 'horizontal',
+        scrollType: 'vertical',
+        cancelBubble: true
+    });
+    var assetslibrary = require('ti.assetslibrary');
+    var g = [assetslibrary.AssetsGroupTypeAll];
+    assetslibrary.getGroups(g, function(e) {
+        var list = e.groups;
+        for (var i = 0; i < list.length; i++) {
+            var ao = list[i];
+            Ti.API.info(ao.name);
+            ao.getAssets(function(e) {
+                var al = e.assets;
+                var length = al.assetsCount;
+                if (length < 1) {
+                    return;
+                }
+                Ti.API.info("length : " + length);
+                for (var i = 0; i < length; i++) {
+                    var o = al.getAssetAtIndex(i);
+
+                    Ti.API.info(o.defaultRepresentation.fullResolutionImage);
+
+                    var perRow = 4;
+                    var cellWidth = Titanium.Platform.displayCaps.platformWidth / perRow;
+                    var cellHeight = cellWidth;
+
+                    var image = Titanium.UI.createImageView({
+                        image: o.defaultRepresentation.fullResolutionImage,
+                        width: cellWidth,
+                        height: cellHeight,
+                        bubbleParent: false,
+                        cancelBubble: true,
+                        ext: {
+                            image: o.defaultRepresentation.fullResolutionImage,
+                            filename: o.defaultRepresentation.filename,
+                        }
+                    });
+                    Ti.API.info(o.defaultRepresentation.filename);
+                    image.addEventListener('click', function(e) {
+                        t = this;
+                        t.hasCheck = !(t.hasCheck);
+                        Ti.API.info(t.hasCheck);
+
+                        if ( t.hasCheck ) {
+                            var icon = Ti.UI.createImageView({
+                                image: '/image1.png',
+                                width: Titanium.Platform.displayCaps.platformWidth / 20,
+                                height: Titanium.Platform.displayCaps.platformWidth / 20,
+                                bubbleParent: false,
+                                cancelBubble: true,
+                                top: 0,
+                                right: 0,
+                            });
+                            t.add(icon);
+                        } else {
+                            var children = t.children.slice(0);
+                            if ( children ) {
+                                for (var i = 0; i < children.length; i++) {
+                                    t.remove(children[i]);
+                                }
+                            }
+                        }
+                    });
+                    scrollView.add(image);
+                }
+            });
+        }
+    }, function(e) {
+    });
+
+
+    var save_images_btn = Titanium.UI.createButton({title: 'save', height: 40, width: 100});
+    save_images_btn.addEventListener('click', function() {
+        save_images();
+        alert('save images completed');
+    });
+    $.flat_list.rightNavButton = save_images_btn;
+    
+    $.flat_list.add(scrollView);
+}
+
+function save_images() {
+    var scrollView = $.flat_list.children.slice(0)[0];
+    images = scrollView.children.slice(0);
+
+    Ti.API.info("images.length: " + images.length);
+    for (var i = 0; i < images.length; i++) {
+
+        if ( !images[i].hasCheck ) { continue; }
+
+        var o = images[i];
+        var id = get_image_seq();
+        var file = Ti.Filesystem.getFile(
+            Titanium.Filesystem.applicationDataDirectory + "/" + id + '.png'
+        );
+        if (!file.exists()) { file.createFile(); }
+        file.write(o.image);
+        save_image_info(id);
+    }
+}
+
+
 
 $.tag_list.addEventListener('focus', function() {
     var children = $.tag_list.children.slice(0);
@@ -541,6 +651,15 @@ $.image_list.addEventListener('focus', function() {
         }
     }
     create_image_list();
+});
+$.flat_list.addEventListener('focus', function() {
+    var children = $.flat_list.children.slice(0);
+    if (children) {
+        for (var i = 0; i < children.length; i++) {
+            $.flat_list.remove(children[i]);
+        }
+    }
+    create_flat_list();
 });
 
 $.index.open();

@@ -23,5 +23,9 @@
         		<Label id="label" onClick="doClick4">show photo</Label>
         	</Window>
         </Tab>
+        <Tab title="flat list">
+			<Window class="container" id="flat_list">
+        	</Window>
+        </Tab>
 	</TabGroup>
 </Alloy>
